@@ -1,0 +1,104 @@
+﻿
+@model ProductListModels
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+</head>
+<body>
+    <br />
+    <div class="container-sm">
+        <table class="table" id="myTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" onclick="sortTable(0);">Product Id▼</th>
+
+                    <th scope="col" onclick="sortTable(1);">Product Name▼</th>
+                    <th scope="col" onclick="sortTable(2);">Product Price▼</th>
+                    <th scope="col" onclick="sortTable(3);">Product Definition▼</th>
+                    <th scope="col" >Product Image</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.ProductPrice</td>
+                        <td>@item.ProductDefinition</td>
+                        <td>
+                            <img src="~/img/@item.ProductImage" width="80" />
+                        </td>
+                        <td><a class="btn btn-success" href="/Home/Update/@item.Id">Update</a></td>
+                        <td><a class="btn btn-danger" href="/Home/Remove/@item.Id">Delete</a> </td>
+
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+    <script>
+
+        function sortTable(n) {
+            sort_table(document.getElementById("myTable"), n);
+        }
+        var asc = 0;
+        function sort_table(table, col) {
+            $('.sortorder').remove();
+            if (asc == 2) { asc = -1; } else { asc = 2; }
+            var rows = table.tBodies[0].rows;
+            var rlen = rows.length ;
+            var arr = new Array();
+            var i, j, cells, clen;
+            for (i = 0; i < rlen; i++) {
+                cells = rows[i].cells;
+                clen = cells.length;
+                arr[i] = new Array();
+                for (j = 0; j < clen; j++) { arr[i][j] = cells[j].innerHTML; }
+            }
+            arr.sort(function (a, b) {
+                var retval = 0;
+                var col1 = a[col].toLowerCase().replace(',', '').replace('$', '').replace(' usd', '')
+                var col2 = b[col].toLowerCase().replace(',', '').replace('$', '').replace(' usd', '')
+                var fA = parseFloat(col1);
+                var fB = parseFloat(col2);
+                if (col1 != col2) {
+                    if ((fA == col1) && (fB == col2)) { retval = (fA > fB) ? asc : -1 * asc; }
+                    else { retval = (col1 > col2) ? asc : -1 * asc; }
+                }
+                return retval;
+            });
+            for (var rowidx = 0; rowidx < rlen; rowidx++) {
+                for (var colidx = 0; colidx < arr[rowidx].length; colidx++) { table.tBodies[0].rows[rowidx].cells[colidx].innerHTML = arr[rowidx][colidx]; }
+            }
+
+            hdr = table.rows[0].cells[col];
+            if (asc == -1) {
+                $(hdr).html($(hdr).html() + '<span class="sortorder">▲</span>');
+            } else {
+                $(hdr).html($(hdr).html() + '<span class="sortorder">▼</span>');
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
+
+
+

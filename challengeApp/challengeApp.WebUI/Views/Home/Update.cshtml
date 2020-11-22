@@ -1,0 +1,31 @@
+﻿@model ProductCreateModels
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+
+<form asp-controller="Home" asp-action="Update" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <div class="form-group">
+        <label asp-for="ProductName">Product Name</label>
+        <input asp-for="ProductName" class="form-control" value="@Model.ProductName" aria-describedby="emailHelp">
+    </div>
+    <div class="form-group">
+        <label asp-for="ProductImage">Product ImageUrl</label>
+        <input asp-for="ProductImage" class="form-control" value="@Model.ProductImage">
+    </div>
+    <div class="form-group">
+        <label asp-for="ProductPrice">Product Price</label>
+        <input asp-for="ProductPrice" class="form-control" value="@Model.ProductPrice">
+    </div>
+    <div class="form-group">
+        <label asp-for="ProductDefinition">Product Definition</label>
+        <input asp-for="ProductDefinition" class="form-control" value="@Model.ProductDefinition">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
