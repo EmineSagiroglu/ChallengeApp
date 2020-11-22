@@ -12,6 +12,7 @@ namespace challengeApp.Business.Abstract
         List<Product> GetSearch(string search);
         List<Product> GetSort(string sortOrder);
         Product GetById(int id);
+        void Create(Product entity);
         void Update(Product entity);
         void Delete(Product entity);
 
